@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,10 +14,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: CardPage(title: 'Flutter Demo Home Page'),
+      home: CardPage(title: 'Card QR Scanner'),
     );
   }
 }
@@ -46,7 +47,8 @@ class _CardPageState extends State<CardPage> {
       body: Center(
         child: Center(
           child: FlatButton(
-            child: Text('Scann'),
+            child: Text('Scan'),
+            color: Colors.green,
             onPressed: () async => scannQr(),
           ),
         ),
@@ -56,9 +58,9 @@ class _CardPageState extends State<CardPage> {
 
   scannQr() async {
     await Permission.camera.request();
-    String value = await scanner.scan();
-    value = value + '#';
-    print(value);
-    await launcher.launch('tel:*805*$value');
+    String value = await scanner.scan().catchError((e) {
+      Fluttertoast.showToast(msg: 'No Number found');
+    });
+    await launcher.launch('tel:' + Uri.encodeComponent('*805*$value#'));
   }
 }
