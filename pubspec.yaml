@@ -23,6 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  qrscan: ^0.2.21
+  permission_handler: ^5.0.1+1
+  url_launcher: 
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -32,6 +35,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+dependency_overrides:
+  url_launcher_platform_interface: 1.0.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
